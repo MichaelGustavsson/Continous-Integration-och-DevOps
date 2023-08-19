@@ -1,4 +1,4 @@
-#Continous Integration och DevOps
+# Continous Integration och DevOps
 
 Att vara utvecklare idag innebär inte enbart att man skall kunna skriva kod😳.
 Som utvecklare måste vi även kunna arbeta i team med andra utvecklare
