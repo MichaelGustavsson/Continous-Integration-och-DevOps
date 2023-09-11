@@ -1,0 +1,38 @@
+trigger:
+ - main
+
+# variables:
+
+stages:
+  - stage: Build
+    displayName: Building the app
+    jobs:
+      - job: Build
+        displayName: 'Build job'
+        pool:
+         vmImage: ubuntu-latest
+
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: '10.x'
+            displayName: 'Installing Node.js'
+
+          - script: |
+              npm install
+              npm run build --if-present
+              npm run test --if-present
+            displayName: 'npm install'
+
+          # Create the artifact by zipping our files...
+          - task: ArchiveFiles@2
+            displayName: 'Archive files'
+            inputs:
+              rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+              includeRootFolder: false
+              archiveType: zip
+              archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+              replaceExistingArchive: true
+
+          - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+            artifact: drop
